@@ -1,6 +1,7 @@
 package io.callista.bikelight.presentation
 
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -16,6 +17,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
 import kotlinx.coroutines.delay
 
+private val SineEasing = CubicBezierEasing(0.37f, 0f, 0.63f, 1f)
+
 @Composable
 fun LightScreen(
     color1: Color,
@@ -29,11 +32,17 @@ fun LightScreen(
     LaunchedEffect(speed, pattern) {
         animFraction.snapTo(0f)
         when (pattern) {
-            PulsePattern.STEADY -> Unit
             PulsePattern.PULSE -> {
                 while (true) {
                     animFraction.animateTo(1f, tween(speed.halfPeriodMs, easing = LinearEasing))
                     animFraction.animateTo(0f, tween(speed.halfPeriodMs, easing = LinearEasing))
+                }
+            }
+            PulsePattern.BREATHE -> {
+                // Sine-wave easing: slow at both ends, faster through the middle
+                while (true) {
+                    animFraction.animateTo(1f, tween(speed.halfPeriodMs, easing = SineEasing))
+                    animFraction.animateTo(0f, tween(speed.halfPeriodMs, easing = SineEasing))
                 }
             }
             PulsePattern.FLASH -> {
@@ -42,6 +51,18 @@ fun LightScreen(
                     delay(speed.halfPeriodMs.toLong())
                     animFraction.snapTo(0f)
                     delay(speed.halfPeriodMs.toLong())
+                }
+            }
+            PulsePattern.HEARTBEAT -> {
+                // Fixed beat duration for crisp feel; speed controls the rate (pause length)
+                val beat = 100L
+                val intraGap = 150L
+                val interGap = (speed.halfPeriodMs * 2L - beat * 2 - intraGap).coerceAtLeast(200L)
+                while (true) {
+                    animFraction.snapTo(1f); delay(beat)
+                    animFraction.snapTo(0f); delay(intraGap)
+                    animFraction.snapTo(1f); delay(beat)
+                    animFraction.snapTo(0f); delay(interGap)
                 }
             }
             PulsePattern.SOS -> {

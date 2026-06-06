@@ -3,9 +3,10 @@ package io.callista.bikelight.presentation
 import androidx.compose.ui.graphics.Color
 
 enum class PulsePattern(val label: String) {
-    STEADY("Steady"),
     PULSE("Pulse"),
+    BREATHE("Breathe"),
     FLASH("Flash"),
+    HEARTBEAT("Heartbeat"),
     SOS("SOS")
 }
 
