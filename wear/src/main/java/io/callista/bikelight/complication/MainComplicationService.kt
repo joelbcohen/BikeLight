@@ -1,41 +1,39 @@
 package io.callista.bikelight.complication
 
+import android.app.PendingIntent
+import android.content.Intent
 import androidx.wear.watchface.complications.data.ComplicationData
 import androidx.wear.watchface.complications.data.ComplicationType
 import androidx.wear.watchface.complications.data.PlainComplicationText
 import androidx.wear.watchface.complications.data.ShortTextComplicationData
 import androidx.wear.watchface.complications.datasource.ComplicationRequest
 import androidx.wear.watchface.complications.datasource.SuspendingComplicationDataSourceService
-import java.util.Calendar
+import io.callista.bikelight.presentation.MainActivity
 
-/**
- * Skeleton for complication data source that returns short text.
- */
 class MainComplicationService : SuspendingComplicationDataSourceService() {
 
     override fun getPreviewData(type: ComplicationType): ComplicationData? {
-        if (type != ComplicationType.SHORT_TEXT) {
-            return null
-        }
-        return createComplicationData("Mon", "Monday")
+        if (type != ComplicationType.SHORT_TEXT) return null
+        return buildData(tapAction = null)
     }
 
     override suspend fun onComplicationRequest(request: ComplicationRequest): ComplicationData {
-        return when (Calendar.getInstance().get(Calendar.DAY_OF_WEEK)) {
-            Calendar.SUNDAY -> createComplicationData("Sun", "Sunday")
-            Calendar.MONDAY -> createComplicationData("Mon", "Monday")
-            Calendar.TUESDAY -> createComplicationData("Tue", "Tuesday")
-            Calendar.WEDNESDAY -> createComplicationData("Wed", "Wednesday")
-            Calendar.THURSDAY -> createComplicationData("Thu", "Thursday")
-            Calendar.FRIDAY -> createComplicationData("Fri", "Friday")
-            Calendar.SATURDAY -> createComplicationData("Sat", "Saturday")
-            else -> throw IllegalArgumentException("too many days")
-        }
+        val tapAction = PendingIntent.getActivity(
+            this, 0,
+            Intent(this, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            },
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        return buildData(tapAction)
     }
 
-    private fun createComplicationData(text: String, contentDescription: String) =
+    private fun buildData(tapAction: PendingIntent?) =
         ShortTextComplicationData.Builder(
-            text = PlainComplicationText.Builder(text).build(),
-            contentDescription = PlainComplicationText.Builder(contentDescription).build()
-        ).build()
+            text = PlainComplicationText.Builder("Bike").build(),
+            contentDescription = PlainComplicationText.Builder("Bike Light").build()
+        )
+            .setTitle(PlainComplicationText.Builder("Light").build())
+            .apply { tapAction?.let { setTapAction(it) } }
+            .build()
 }

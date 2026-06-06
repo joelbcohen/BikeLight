@@ -47,7 +47,7 @@ private fun tile(
                     primaryLayout(
                         mainSlot = {
                             text(
-                                context.getString(R.string.hello_world, "Tile").layoutString,
+                                context.getString(R.string.app_name).layoutString,
                                 typography = BODY_LARGE
                             )
                         }
