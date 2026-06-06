@@ -30,10 +30,10 @@ class MainComplicationService : SuspendingComplicationDataSourceService() {
 
     private fun buildData(tapAction: PendingIntent?) =
         ShortTextComplicationData.Builder(
-            text = PlainComplicationText.Builder("Bike").build(),
+            text = PlainComplicationText.Builder("Light").build(),
             contentDescription = PlainComplicationText.Builder("Bike Light").build()
         )
-            .setTitle(PlainComplicationText.Builder("Light").build())
+            .setTitle(PlainComplicationText.Builder("Bike").build())
             .apply { tapAction?.let { setTapAction(it) } }
             .build()
 }
