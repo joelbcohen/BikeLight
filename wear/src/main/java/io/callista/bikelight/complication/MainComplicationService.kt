@@ -38,7 +38,7 @@ class MainComplicationService : SuspendingComplicationDataSourceService() {
         }
     }
 
-    private fun icon() = Icon.createWithResource(this, R.drawable.ic_bikelight)
+    private fun icon() = Icon.createWithResource(this, R.mipmap.ic_launcher)
 
     private fun smallImage() = SmallImage.Builder(icon(), SmallImageType.PHOTO).build()
 
