@@ -14,12 +14,14 @@ fun BikeLightApp(
     initialColor2Index: Int,
     initialSpeedIndex: Int,
     initialPatternIndex: Int,
-    onSave: (color1: Int, color2: Int, speed: Int, pattern: Int) -> Unit
+    initialSoundEnabled: Boolean,
+    onSave: (color1: Int, color2: Int, speed: Int, pattern: Int, sound: Boolean) -> Unit
 ) {
     var color1Index by remember { mutableIntStateOf(initialColor1Index) }
     var color2Index by remember { mutableIntStateOf(initialColor2Index) }
     var speedIndex by remember { mutableIntStateOf(initialSpeedIndex) }
     var patternIndex by remember { mutableIntStateOf(initialPatternIndex) }
+    var soundEnabled by remember { mutableStateOf(initialSoundEnabled) }
     var showSettings by remember { mutableStateOf(false) }
 
     if (showSettings) {
@@ -29,10 +31,12 @@ fun BikeLightApp(
             color2Index = color2Index,
             speedIndex = speedIndex,
             patternIndex = patternIndex,
-            onColor1Change = { color1Index = it; onSave(it, color2Index, speedIndex, patternIndex) },
-            onColor2Change = { color2Index = it; onSave(color1Index, it, speedIndex, patternIndex) },
-            onSpeedChange = { speedIndex = it; onSave(color1Index, color2Index, it, patternIndex) },
-            onPatternChange = { patternIndex = it; onSave(color1Index, color2Index, speedIndex, it) },
+            soundEnabled = soundEnabled,
+            onColor1Change = { color1Index = it; onSave(it, color2Index, speedIndex, patternIndex, soundEnabled) },
+            onColor2Change = { color2Index = it; onSave(color1Index, it, speedIndex, patternIndex, soundEnabled) },
+            onSpeedChange = { speedIndex = it; onSave(color1Index, color2Index, it, patternIndex, soundEnabled) },
+            onPatternChange = { patternIndex = it; onSave(color1Index, color2Index, speedIndex, it, soundEnabled) },
+            onSoundChange = { soundEnabled = it; onSave(color1Index, color2Index, speedIndex, patternIndex, it) },
             onBack = { showSettings = false }
         )
     } else {
@@ -41,6 +45,7 @@ fun BikeLightApp(
             color2 = PRESET_COLORS[color2Index].second,
             speed = PulseSpeed.entries[speedIndex],
             pattern = PulsePattern.entries[patternIndex],
+            soundEnabled = soundEnabled,
             onTap = { showSettings = true }
         )
     }

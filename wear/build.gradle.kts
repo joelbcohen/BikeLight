@@ -14,9 +14,9 @@ android {
     defaultConfig {
         applicationId = "io.callista.bikelight"
         minSdk = 30
-        targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        targetSdk = 34
+        versionCode = 4
+        versionName = "4.0"
 
     }
 

@@ -17,6 +17,7 @@ class MainActivity : ComponentActivity() {
         val color2 = prefs.getInt("color2", 1)
         val speed = prefs.getInt("speed", PulseSpeed.MEDIUM.ordinal)
         val pattern = prefs.getInt("pattern", PulsePattern.PULSE.ordinal)
+        val soundEnabled = prefs.getBoolean("sound_enabled", false)
 
         setContent {
             BikeLightTheme {
@@ -25,12 +26,14 @@ class MainActivity : ComponentActivity() {
                     initialColor2Index = color2,
                     initialSpeedIndex = speed,
                     initialPatternIndex = pattern,
-                    onSave = { c1, c2, s, p ->
+                    initialSoundEnabled = soundEnabled,
+                    onSave = { c1, c2, s, p, snd ->
                         prefs.edit()
                             .putInt("color1", c1)
                             .putInt("color2", c2)
                             .putInt("speed", s)
                             .putInt("pattern", p)
+                            .putBoolean("sound_enabled", snd)
                             .apply()
                     }
                 )

@@ -34,10 +34,12 @@ fun SettingsScreen(
     color2Index: Int,
     speedIndex: Int,
     patternIndex: Int,
+    soundEnabled: Boolean,
     onColor1Change: (Int) -> Unit,
     onColor2Change: (Int) -> Unit,
     onSpeedChange: (Int) -> Unit,
     onPatternChange: (Int) -> Unit,
+    onSoundChange: (Boolean) -> Unit,
     onBack: () -> Unit
 ) {
     val listState = rememberTransformingLazyColumnState()
@@ -133,6 +135,22 @@ fun SettingsScreen(
                         ) {
                             Text("Pattern", modifier = Modifier.weight(1f))
                             Text(PulsePattern.entries[patternIndex].label)
+                        }
+                    }
+                }
+                item {
+                    Button(
+                        onClick = { onSoundChange(!soundEnabled) },
+                        modifier = Modifier.fillMaxWidth()
+                            .transformedHeight(this, transformationSpec),
+                        transformation = SurfaceTransformation(transformationSpec)
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("Sound", modifier = Modifier.weight(1f))
+                            Text(if (soundEnabled) "On" else "Off")
                         }
                     }
                 }
