@@ -32,11 +32,11 @@ fun BikeLightApp(
             speedIndex = speedIndex,
             patternIndex = patternIndex,
             soundEnabled = soundEnabled,
-            onColor1Change = { color1Index = it; onSave(it, color2Index, speedIndex, patternIndex, soundEnabled) },
-            onColor2Change = { color2Index = it; onSave(color1Index, it, speedIndex, patternIndex, soundEnabled) },
-            onSpeedChange = { speedIndex = it; onSave(color1Index, color2Index, it, patternIndex, soundEnabled) },
-            onPatternChange = { patternIndex = it; onSave(color1Index, color2Index, speedIndex, it, soundEnabled) },
-            onSoundChange = { soundEnabled = it; onSave(color1Index, color2Index, speedIndex, patternIndex, it) },
+            onColor1Change = { color1Index = it; onSave(color1Index, color2Index, speedIndex, patternIndex, soundEnabled) },
+            onColor2Change = { color2Index = it; onSave(color1Index, color2Index, speedIndex, patternIndex, soundEnabled) },
+            onSpeedChange = { speedIndex = it; onSave(color1Index, color2Index, speedIndex, patternIndex, soundEnabled) },
+            onPatternChange = { patternIndex = it; onSave(color1Index, color2Index, speedIndex, patternIndex, soundEnabled) },
+            onSoundChange = { soundEnabled = it; onSave(color1Index, color2Index, speedIndex, patternIndex, soundEnabled) },
             onBack = { showSettings = false }
         )
     } else {
